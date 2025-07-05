@@ -1,0 +1,19 @@
+/navsat_converter:
+  ros__parameters:
+    motion:
+      buffer_size: 100
+      gravity: 9.803
+      use_imu: true
+      use_twist: false
+      use_odometry: true
+    pointcloud:
+      from_lasercan: false
+      labels:
+        x: x
+        y: y
+        z: z
+        timestamp: timestamp
+    tf:
+      disable: false
+      ignore_stamp: false
+      timeout_ms: 100

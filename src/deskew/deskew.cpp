@@ -111,7 +111,7 @@ bool Deskewer::fuse(double time, const Twist & twist)
   twists_.at(curr_) = twist;
 
   curr_++;
-  if(curr_ > size_) {
+  if(curr_ >= size_) {
     curr_ = 0ul;
   }
 
@@ -147,7 +147,7 @@ bool Deskewer::fuse(double time, const Imu & imu)
   }
 
   curr_++;
-  if(curr_ > size_) {
+  if(curr_ >= size_) {
     curr_ = 0ul;
   }
 

@@ -215,11 +215,11 @@ void ScanDeskewer::input_laserscan_clbk(const LaserScan::SharedPtr msg)
 
   PointCloud2Modifier modifier(pointcloud);
   modifier.setPointCloud2Fields(5,
-    pointcloud_labels_x_.c_str(), count, PointField::FLOAT32,
-    pointcloud_labels_y_.c_str(), count, PointField::FLOAT32,
-    pointcloud_labels_z_.c_str(), count, PointField::FLOAT32,
-    "intensity", count, PointField::FLOAT32,
-    pointcloud_labels_timestamp_.c_str(), count, PointField::FLOAT32);
+    pointcloud_labels_x_.c_str(), 1, PointField::FLOAT32,
+    pointcloud_labels_y_.c_str(), 1, PointField::FLOAT32,
+    pointcloud_labels_z_.c_str(), 1, PointField::FLOAT32,
+    "intensity", 1, PointField::FLOAT32,
+    pointcloud_labels_timestamp_.c_str(), 1, PointField::FLOAT32);
   modifier.reserve(count);
 
   PointCloud2Iterator<float> x_iter(pointcloud, pointcloud_labels_x_);
@@ -325,7 +325,7 @@ void ScanDeskewer::input_pointcloud_clbk(PointCloud2::UniquePtr msg)
     }
   }
 
-  bool count_check = count > 0ul;
+  bool count_check = count == 1ul;
   bool found_check = t_found && x_found && y_found && z_found && found == 4ul;
 
   if(!count_check || !found_check) {
@@ -338,7 +338,7 @@ void ScanDeskewer::input_pointcloud_clbk(PointCloud2::UniquePtr msg)
     return;
   }
 
-  deskew(*msg, count);
+  deskew(*msg, msg->height * msg->width);
   publish(*msg);
 }
 

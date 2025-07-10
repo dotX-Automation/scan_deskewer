@@ -63,9 +63,9 @@ void ScanDeskewer::deskew(PointCloud2 & pointcloud, size_t count)
     *y_iter_deskew = points[i].y();
     *z_iter_deskew = points[i].z();
 
-    ++x_iter;
-    ++y_iter;
-    ++z_iter;
+    ++x_iter_deskew;
+    ++y_iter_deskew;
+    ++z_iter_deskew;
   }
 }
 

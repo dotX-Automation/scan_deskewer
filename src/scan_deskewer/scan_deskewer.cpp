@@ -37,19 +37,15 @@ ScanDeskewer::ScanDeskewer(const rclcpp::NodeOptions & opts)
   RCLCPP_INFO(this->get_logger(), "Node initialized");
 }
 
-
 ScanDeskewer::~ScanDeskewer()
-{
-  RCLCPP_INFO(this->get_logger(), "Destructor called, sending stop signal.");
-}
-
+{}
 
 void ScanDeskewer::init_cgroups()
 {
   if (motion_use_imu_) {
     motion_imu_sub_cgroup_ = dua_create_exclusive_cgroup();
   }
-  
+
   if (motion_use_twist_) {
     motion_twist_sub_cgroup_ = dua_create_exclusive_cgroup();
   }
@@ -118,14 +114,12 @@ void ScanDeskewer::init_subscribers()
   }
 }
 
-
 void ScanDeskewer::init_publishers()
 {
   output_pointcloud_pub_ = dua_create_publisher<PointCloud2>(
     output_pub_topic_,
     dua_qos::Reliable::get_datum_qos());
 }
-
 
 void ScanDeskewer::init_service_clients()
 {
@@ -135,10 +129,9 @@ void ScanDeskewer::init_service_clients()
   }
 }
 
-
 void ScanDeskewer::init_internals()
 {
-  deskewer_ = deskew::Deskewer(motion_buffer_size_);
+  deskewer_ = std::make_unique<deskew::Deskewer>(motion_buffer_size_);
   sensor_frame_id_ = "";
   imu_frame_id_ = "";
   twist_frame_id_ = "";
@@ -150,7 +143,6 @@ void ScanDeskewer::init_internals()
   twist_isometry_valid_ = false;
   odometry_isometry_valid_ = false;
 }
-
 
 } // namespace scan_deskewer
 

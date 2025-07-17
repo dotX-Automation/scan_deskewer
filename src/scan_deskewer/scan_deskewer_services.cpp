@@ -27,7 +27,6 @@
 namespace scan_deskewer
 {
 
-
 bool ScanDeskewer::get_transform(
   const std::string & source, const std::string & target,
   const rclcpp::Time & time, Isometry3d & isometry)
@@ -64,6 +63,5 @@ bool ScanDeskewer::get_transform(
 
   return true;
 }
-
 
 } // namespace scan_deskewer

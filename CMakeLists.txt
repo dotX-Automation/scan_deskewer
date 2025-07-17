@@ -54,7 +54,7 @@ add_library(scan_deskewer SHARED ${SCAN_DESKEWER_SRCS})
 target_compile_definitions(scan_deskewer PRIVATE COMPOSITION_BUILDING_DLL)
 target_include_directories(scan_deskewer PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
 target_link_libraries(scan_deskewer
   Eigen3::Eigen)
 target_compile_features(scan_deskewer PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
@@ -78,7 +78,7 @@ add_executable(scan_deskewer_app
   src/scan_deskewer_app.cpp)
 target_include_directories(scan_deskewer_app PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
 target_compile_features(scan_deskewer_app PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 target_link_libraries(scan_deskewer_app scan_deskewer)
 ament_target_dependencies(scan_deskewer_app

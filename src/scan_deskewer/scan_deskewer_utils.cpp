@@ -27,7 +27,6 @@
 namespace scan_deskewer
 {
 
-
 void ScanDeskewer::deskew(PointCloud2 & pointcloud, size_t count)
 {
   std::vector<double> times;
@@ -52,7 +51,7 @@ void ScanDeskewer::deskew(PointCloud2 & pointcloud, size_t count)
 
   {
     std::lock_guard<std::mutex> guard(mutex_);
-    deskewer_.deskew(times, points);
+    deskewer_->deskew(times, points);
   }
 
   PointCloud2Iterator<float> x_iter_deskew(pointcloud, pointcloud_labels_x_);
@@ -77,7 +76,7 @@ bool ScanDeskewer::refresh_isometry(
   if(source.empty()) {
     return false;
   }
-  
+
   if(target.empty()) {
     return false;
   }
@@ -90,6 +89,5 @@ double ScanDeskewer::timestamp_to_seconds(const Time &stamp)
 {
   return ((double) stamp.sec) + 1e-9 * ((double) stamp.nanosec);
 }
-
 
 } // namespace scan_deskewer

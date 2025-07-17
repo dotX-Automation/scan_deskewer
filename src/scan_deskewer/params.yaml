@@ -10,7 +10,7 @@ params:
     max_value: 1000000
     step: 1
     description: "Number of integration points buffered to solve agent motion."
-    constraints: "It is a integer number in range [0, 1000000]."
+    constraints: ""
     read_only: false
     var_name: motion_buffer_size_
 
@@ -20,8 +20,8 @@ params:
     min_value: 0.0
     max_value: 100.0
     step: 0.0
-    description: "Gravity acceleration to remove from Imu using its orientation."
-    constraints: "Must be expressed in m/s^2."
+    description: "Gravity acceleration to remove from Imu using its orientation. [m/s^2]"
+    constraints: ""
     read_only: false
     var_name: motion_gravity_
 
@@ -29,7 +29,7 @@ params:
     type: bool
     default_value: true
     description: "Use IMU samples to integration agent motion."
-    constraints: "It is a boolean value."
+    constraints: ""
     read_only: true
     var_name: motion_use_imu_
 
@@ -37,7 +37,7 @@ params:
     type: bool
     default_value: false
     description: "Use agent local Twist to integration agent motion. It is used as correction if IMU is used and odometry correction is not"
-    constraints: "It is a boolean value."
+    constraints: ""
     read_only: true
     var_name: motion_use_twist_
 
@@ -45,7 +45,7 @@ params:
     type: bool
     default_value: false
     description: "Use odometry solution from EKF to correct integration."
-    constraints: "It is a boolean value."
+    constraints: ""
     read_only: true
     var_name: motion_use_odometry_
 
@@ -53,39 +53,39 @@ params:
     type: bool
     default_value: false
     description: "If the pointcloud is produced from a LaserScan."
-    constraints: "It is a boolean value."
+    constraints: ""
     read_only: true
     var_name: pointcloud_from_laserscan_
 
   pointcloud.labels.x:
     type: string
     default_value: x
-    description: "Labels used by the Pointclouds for the X coordinate data."
-    constraints: "Must be a valid frame id."
+    description: "Labels used in the pointclouds for the X coordinate data."
+    constraints: "Must be a valid label in the PointCloud2 message."
     read_only: true
     var_name: pointcloud_labels_x_
 
   pointcloud.labels.y:
     type: string
     default_value: y
-    description: "Labels used by the Pointclouds for the Y coordinate data."
-    constraints: "Must be a valid frame id."
+    description: "Labels used in the pointclouds for the Y coordinate data."
+    constraints: "Must be a valid label in the PointCloud2 message."
     read_only: true
     var_name: pointcloud_labels_y_
 
   pointcloud.labels.z:
     type: string
     default_value: z
-    description: "Labels used by the Pointclouds for the Z coordinate data."
-    constraints: "Must be a valid frame id."
+    description: "Labels used in the pointclouds for the Z coordinate data."
+    constraints: "Must be a valid label in the PointCloud2 message."
     read_only: true
     var_name: pointcloud_labels_z_
 
   pointcloud.labels.timestamp:
     type: string
     default_value: timestamp
-    description: "Labels used by the Pointclouds for the points' timestamp."
-    constraints: "Must be a valid frame id."
+    description: "Labels used in the pointclouds for the points' timestamp."
+    constraints: "Must be a valid label in the PointCloud2 message."
     read_only: true
     var_name: pointcloud_labels_timestamp_
 
@@ -93,7 +93,7 @@ params:
     type: bool
     default_value: false
     description: "Disable TF2 operations."
-    constraints: "Should be off."
+    constraints: "Should be false."
     read_only: false
     var_name: tf_disable_
 
@@ -101,7 +101,7 @@ params:
     type: bool
     default_value: false
     description: "Ignore requested timestamp in TF2 lookup operations."
-    constraints: "Should be off."
+    constraints: "Should be false."
     read_only: false
     var_name: tf_ignore_stamp_
 

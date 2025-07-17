@@ -32,6 +32,7 @@
 #include <bitset>
 #include <chrono>
 #include <exception>
+#include <memory>
 #include <mutex>
 #include <vector>
 
@@ -90,7 +91,7 @@ public:
   ~ScanDeskewer();
 
 private:
-  /* Node Initialization Routines. */
+  /* Node initialization routines. */
   void init_parameters() override;
   void init_cgroups() override;
   void init_subscribers() override;
@@ -102,7 +103,7 @@ private:
    */
   void init_internals();
 
-  /* Node Parameters. */
+  /* Node parameters. */
   int64_t motion_buffer_size_ = 0;
   double motion_gravity_ = 0.0;
   bool motion_use_imu_ = false;
@@ -117,8 +118,8 @@ private:
   bool tf_ignore_stamp_ = false;
   int64_t tf_timeout_ms_ = 0;
 
-  /* Node Variables. */
-  deskew::Deskewer deskewer_;
+  /* Node variables. */
+  std::unique_ptr<deskew::Deskewer> deskewer_;
   std::mutex mutex_;
   std::string sensor_frame_id_;
   std::string imu_frame_id_;
@@ -135,11 +136,10 @@ private:
   /* Publishers. */
   rclcpp::Publisher<PointCloud2>::SharedPtr output_pointcloud_pub_;
 
-  /* Publishers Topics. */
+  /* Publishers topics. */
   static const std::string output_pub_topic_;
 
-  /* Publishers Routines. */
-
+  /* Publishers routines. */
   /**
    * @brief Publish deskewed ROS2 pointclouds.
    *
@@ -154,20 +154,19 @@ private:
   rclcpp::Subscription<LaserScan>::SharedPtr input_laserscan_sub_;
   rclcpp::Subscription<PointCloud2>::SharedPtr input_pointcloud_sub_;
 
-  /* Subscriptions Topics. */
+  /* Subscriptions topics. */
   static const std::string motion_imu_sub_topic_;
   static const std::string motion_twist_sub_topic_;
   static const std::string motion_odometry_sub_topic_;
   static const std::string input_sub_topic_;
 
-  /* Subscriptions Callback Groups. */
+  /* Subscriptions callback groups. */
   rclcpp::CallbackGroup::SharedPtr motion_imu_sub_cgroup_;
   rclcpp::CallbackGroup::SharedPtr motion_twist_sub_cgroup_;
   rclcpp::CallbackGroup::SharedPtr motion_odometry_sub_cgroup_;
   rclcpp::CallbackGroup::SharedPtr input_sub_cgroup_;
 
-  /* Subscriptions Callbacks. */
-
+  /* Subscriptions callbacks. */
   /**
    * @brief Callback to integrate imu data into the navigation state.
    *
@@ -202,18 +201,17 @@ private:
    * @param msg PointCloud2 message to parse.
    */
   void input_pointcloud_clbk(PointCloud2::UniquePtr msg);
-  
-  /* Service Clients */
+
+  /* Service clients */
   simple_serviceclient::Client<GetTransform>::SharedPtr get_transform_client_;
 
-  /* Service Clients Names */
+  /* Service clients names */
   static const std::string get_transform_client_name_;
 
-  /* Service Clients Routines */
-
+  /* Service clients routines */
   /**
    * @brief Retrieve transform from the TF Server
-   * 
+   *
    * @param source Source frame.
    * @param target Target frame.
    * @param time Request timestamp.
@@ -224,7 +222,6 @@ private:
     const rclcpp::Time & time, Isometry3d & isometry);
 
   /* Utility routines. */
-  
   /**
    * @brief Deskew ROS2 pointclouds.
    *
@@ -240,7 +237,7 @@ private:
    * @param target Target frame.
    * @param time Request timestamp.
    * @param transform Transform result.
-   * 
+   *
    * @return True if the transformation is available, false otherwise
    */
   bool refresh_isometry(
@@ -253,7 +250,6 @@ private:
    * @param timestamp Time to convert.
    */
   double timestamp_to_seconds(const Time &stamp);
-
 };
 
 } // namespace scan_deskewer

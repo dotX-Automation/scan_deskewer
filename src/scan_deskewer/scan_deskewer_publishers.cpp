@@ -27,11 +27,9 @@
 namespace scan_deskewer
 {
 
-
 void ScanDeskewer::publish(const PointCloud2 & pointcloud)
 {
   output_pointcloud_pub_->publish(pointcloud);
 }
-
 
 } // namespace scan_deskewer

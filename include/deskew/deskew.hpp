@@ -36,7 +36,9 @@ using namespace Eigen;
 namespace deskew
 {
 
-
+/**
+ * Holds position and orientation data.
+ */
 struct Pose
 {
   Pose()
@@ -51,7 +53,9 @@ struct Pose
   Pose transform(const Isometry3d & isometry);
 };
 
-
+/**
+ * Holds linear and angular velocity data.
+ */
 struct Twist
 {
   Twist()
@@ -66,7 +70,9 @@ struct Twist
   Twist transform(const Isometry3d & isometry);
 };
 
-
+/**
+ * Holds IMU data.
+ */
 struct Imu
 {
   Imu()
@@ -82,6 +88,9 @@ struct Imu
 };
 
 
+/**
+ * Deskewer class for handling of deskewing operations.
+ */
 class Deskewer
 {
 public:
@@ -137,6 +146,5 @@ private:
   size_t last_idx() const;
   std::vector<size_t> find(double time) const;
 };
-
 
 } // namespace deskew

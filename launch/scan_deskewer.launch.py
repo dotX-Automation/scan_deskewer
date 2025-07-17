@@ -1,5 +1,5 @@
 """
-Scan Deskewer app launch file.
+Scan Deskewer app sample launch file.
 
 Giorgio Manca <giorgio.manca.97@gmail.com>
 
@@ -55,6 +55,18 @@ def generate_launch_description():
     ld.add_action(ns_launch_arg)
     ld.add_action(cf_launch_arg)
 
+    # Launch dua_tf_server node
+    tf_server = Node(
+        package='dua_tf_server',
+        executable='dua_tf_server_app',
+        namespace=ns,
+        emulate_tty=True,
+        output='both',
+        log_cmd=True,
+        parameters=[config]
+    )
+    ld.add_action(tf_server)
+
     # Create node launch description
     node = Node(
         package='scan_deskewer',
@@ -68,14 +80,14 @@ def generate_launch_description():
             cf
         ],
         remappings=[
-            ('/scan_deskewer/input', '/scan_deskewer/input'),
-            #('/scan_deskewer/imu', '/scan_deskewer/imu'),
-            #('/scan_deskewer/twist', '/scan_deskewer/twist'),
-            #('/scan_deskewer/odometry', '/scan_deskewer/odometry'),
-            ('/scan_deskewer/output', '/scan_deskewer/output'),
+            ('/dua_tf_server/get_transform', '/dua_tf_server/get_transform'),
+            ('/input',                       '/input'),
+            ('/imu',                         '/imu'),
+            ('/twist',                       '/twist'),
+            ('/odometry',                    '/odometry'),
+            ('/scan_deskewer/output',        '/output'),
         ]
     )
-
     ld.add_action(node)
 
     return ld

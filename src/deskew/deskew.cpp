@@ -27,7 +27,6 @@
 namespace deskew
 {
 
-
 Pose Pose::transform(const Isometry3d & isometry) {
   Pose res;
 
@@ -37,26 +36,23 @@ Pose Pose::transform(const Isometry3d & isometry) {
   return res;
 }
 
-
 Twist Twist::transform(const Isometry3d & isometry) {
   Twist res;
 
   res.ang = isometry.linear() * ang;
   res.lin = isometry.linear() * lin + isometry.translation().cross(res.ang);
-  
+
   return res;
 }
-
 
 Imu Imu::transform(const Isometry3d & isometry) {
   Imu res;
 
   res.gyro = isometry.linear() * gyro;
   res.accel = isometry.linear() * (accel + gyro.cross(gyro.cross(isometry.translation())));
-  
+
   return res;
 }
-
 
 Deskewer::Deskewer(size_t buffer_size)
 {
@@ -77,7 +73,6 @@ Deskewer::Deskewer(size_t buffer_size)
   corr_twist_ = Twist();
 }
 
-
 void Deskewer::clear()
 {
   used_ = 0ul;
@@ -93,7 +88,6 @@ void Deskewer::clear()
   corr_time_ = 0.0;
   corr_twist_ = Twist();
 }
-
 
 bool Deskewer::fuse(double time, const Twist & twist)
 {
@@ -125,7 +119,6 @@ bool Deskewer::fuse(double time, const Twist & twist)
 
   return true;
 }
-
 
 bool Deskewer::fuse(double time, const Imu & imu)
 {
@@ -162,7 +155,6 @@ bool Deskewer::fuse(double time, const Imu & imu)
   return true;
 }
 
-
 bool Deskewer::correct(double time, const Twist & twist)
 {
   if (used_ == 0ul || time < first()) {
@@ -189,7 +181,6 @@ bool Deskewer::correct(double time, const Twist & twist)
   }
 }
 
-
 Twist Deskewer::evaluate(double time) const
 {
   Twist res;
@@ -207,7 +198,6 @@ Twist Deskewer::evaluate(double time) const
   return res;
 }
 
-
 std::vector<Twist> Deskewer::evaluate(const std::vector<double> & times) const
 {
   std::vector<Twist> res = std::vector<Twist>();
@@ -219,7 +209,6 @@ std::vector<Twist> Deskewer::evaluate(const std::vector<double> & times) const
 
   return res;
 }
-
 
 std::vector<Pose> Deskewer::solve(const std::vector<double> & times, const Pose & init) const
 {
@@ -240,7 +229,7 @@ std::vector<Pose> Deskewer::solve(const std::vector<double> & times, const Pose 
     twist.lin = 0.5 * (twist_prev.lin + twist_next.lin);
     twist.ang = 0.5 * (twist_prev.ang + twist_next.ang);
     twist_prev = twist_next;
-    
+
     double real = std::cos(0.5 * twist.ang.norm() * dt);
     Vector3d imag = std::sin(0.5 * twist.ang.norm() * dt) * twist.ang.normalized();
     Quaterniond quat_omega = Quaterniond(real, imag.x(), imag.y(), imag.z());
@@ -255,7 +244,6 @@ std::vector<Pose> Deskewer::solve(const std::vector<double> & times, const Pose 
 
   return res;
 }
-
 
 std::vector<Vector3d> Deskewer::deskew(
   const std::vector<double> & times,
@@ -276,7 +264,6 @@ std::vector<Vector3d> Deskewer::deskew(
   return res;
 }
 
-
 void Deskewer::deskew(
   const std::vector<double> & times,
   std::vector<Vector3d> & points,
@@ -291,7 +278,6 @@ void Deskewer::deskew(
   }
 }
 
-
 size_t Deskewer::first_idx() const
 {
   if(used_ < size_) {
@@ -300,7 +286,6 @@ size_t Deskewer::first_idx() const
     return curr_;
   }
 }
-
 
 size_t Deskewer::last_idx() const
 {
@@ -313,7 +298,6 @@ size_t Deskewer::last_idx() const
   }
 }
 
-
 std::vector<size_t> Deskewer::find(double time) const
 {
   std::vector<size_t> idxs = std::vector<size_t>();
@@ -321,7 +305,7 @@ std::vector<size_t> Deskewer::find(double time) const
   if(used_ == 0ul) {
     return idxs;
   }
-  
+
   size_t idx = 0ul;
   if(used_ == 1) {
     idxs.push_back(idx);
@@ -360,6 +344,5 @@ std::vector<size_t> Deskewer::find(double time) const
   idxs.push_back((idx+1)%size_);
   return idxs;
 }
-
 
 } // namespace deskew

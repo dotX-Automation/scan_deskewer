@@ -27,7 +27,6 @@
 namespace scan_deskewer
 {
 
-
 void ScanDeskewer::motion_imu_clbk(const Imu::SharedPtr msg)
 {
   if (!tf_disable_) {
@@ -76,10 +75,9 @@ void ScanDeskewer::motion_imu_clbk(const Imu::SharedPtr msg)
 
   {
     std::lock_guard<std::mutex> guard(mutex_);
-    deskewer_.fuse(time, imu);
+    deskewer_->fuse(time, imu);
   }
 }
-
 
 void ScanDeskewer::motion_twist_clbk(const TwistWithCovarianceStamped::SharedPtr msg)
 {
@@ -119,13 +117,12 @@ void ScanDeskewer::motion_twist_clbk(const TwistWithCovarianceStamped::SharedPtr
 
   if (motion_use_imu_ && !motion_use_odometry_) {
     std::lock_guard<std::mutex> guard(mutex_);
-    deskewer_.correct(time, twist);
+    deskewer_->correct(time, twist);
   } else {
     std::lock_guard<std::mutex> guard(mutex_);
-    deskewer_.fuse(time, twist);
+    deskewer_->fuse(time, twist);
   }
 }
-
 
 void ScanDeskewer::motion_odometry_clbk(const Odometry::SharedPtr msg)
 {
@@ -165,10 +162,10 @@ void ScanDeskewer::motion_odometry_clbk(const Odometry::SharedPtr msg)
 
   if (motion_use_imu_ || motion_use_twist_) {
     std::lock_guard<std::mutex> guard(mutex_);
-    deskewer_.correct(time, twist);
+    deskewer_->correct(time, twist);
   } else {
     std::lock_guard<std::mutex> guard(mutex_);
-    deskewer_.fuse(time, twist);
+    deskewer_->fuse(time, twist);
   }
 }
 
@@ -341,6 +338,5 @@ void ScanDeskewer::input_pointcloud_clbk(PointCloud2::UniquePtr msg)
   deskew(*msg, msg->height * msg->width);
   publish(*msg);
 }
-
 
 } // namespace scan_deskewer

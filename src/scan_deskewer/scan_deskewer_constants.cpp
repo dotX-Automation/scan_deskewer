@@ -27,16 +27,16 @@
 namespace scan_deskewer
 {
 
-/* Publishers Topics. */
+/* Publishers topics. */
 const std::string ScanDeskewer::output_pub_topic_ = "~/output";
 
-/* Subscriptions Topics. */
-const std::string ScanDeskewer::motion_imu_sub_topic_ = "~/imu";
-const std::string ScanDeskewer::motion_twist_sub_topic_ = "~/twist";
-const std::string ScanDeskewer::motion_odometry_sub_topic_ = "~/odometry";
-const std::string ScanDeskewer::input_sub_topic_ = "~/input";
+/* Subscriptions topics. */
+const std::string ScanDeskewer::motion_imu_sub_topic_ = "/imu";
+const std::string ScanDeskewer::motion_twist_sub_topic_ = "/twist";
+const std::string ScanDeskewer::motion_odometry_sub_topic_ = "/odometry";
+const std::string ScanDeskewer::input_sub_topic_ = "/input";
 
-/* Service Client Names */
+/* Service client Names */
 const std::string ScanDeskewer::get_transform_client_name_ = "/dua_tf_server/get_transform";
 
 } // namespace scan_deskewer

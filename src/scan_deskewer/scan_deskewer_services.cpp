@@ -34,16 +34,17 @@ bool ScanDeskewer::get_transform(
   Time stamp = tf_ignore_stamp_ ? rclcpp::Time() : time;
 
   auto req = std::make_shared<GetTransform::Request>();
-  req->source.frame_id = source;
+  req->source.frame_id = target;
   req->source.stamp = stamp;
-  req->target.frame_id = target;
+  req->target.frame_id = source;
   req->target.stamp = stamp;
   req->timeout = rclcpp::Duration(std::chrono::nanoseconds(1000 * tf_timeout_ms_));
 
   auto resp = get_transform_client_->call_sync(req);
-  if (resp->result.result == CommandResultStamped::ERROR) {
+  if (resp == nullptr || resp->result.result != CommandResultStamped::SUCCESS) {
     RCLCPP_ERROR_THROTTLE(get_logger(), *get_clock(), 1000,
-      "Error requesting transform from %s to %s", source.c_str(), target.c_str());
+      "Error requesting transform from %s to %s",
+      source.c_str(), target.c_str());
     return false;
   }
 

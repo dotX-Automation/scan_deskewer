@@ -36,7 +36,4 @@ const std::string ScanDeskewer::motion_twist_sub_topic_ = "/twist";
 const std::string ScanDeskewer::motion_odometry_sub_topic_ = "/odometry";
 const std::string ScanDeskewer::input_sub_topic_ = "/input";
 
-/* Service client Names */
-const std::string ScanDeskewer::get_transform_client_name_ = "/dua_tf_server/get_transform";
-
 } // namespace scan_deskewer

@@ -35,7 +35,7 @@ void ScanDeskewer::motion_imu_clbk(const Imu::SharedPtr msg)
       return;
     }
 
-    if(msg->header.frame_id != imu_frame_id_) {
+    if (msg->header.frame_id != imu_frame_id_) {
       imu_frame_id_ = msg->header.frame_id;
       imu_isometry_valid_ = refresh_isometry(
         sensor_frame_id_,
@@ -87,7 +87,7 @@ void ScanDeskewer::motion_twist_clbk(const TwistWithCovarianceStamped::SharedPtr
       return;
     }
 
-    if(msg->header.frame_id != twist_frame_id_) {
+    if (msg->header.frame_id != twist_frame_id_) {
       twist_frame_id_ = msg->header.frame_id;
       twist_isometry_valid_ = refresh_isometry(
         sensor_frame_id_,
@@ -132,7 +132,7 @@ void ScanDeskewer::motion_odometry_clbk(const Odometry::SharedPtr msg)
       return;
     }
 
-    if(msg->header.frame_id != odometry_frame_id_) {
+    if (msg->header.frame_id != odometry_frame_id_) {
       odometry_frame_id_ = msg->header.frame_id;
       odometry_isometry_valid_ = refresh_isometry(
         sensor_frame_id_,
@@ -297,7 +297,7 @@ void ScanDeskewer::input_pointcloud_clbk(PointCloud2::UniquePtr msg)
 
   for (size_t i = 0ul; i < msg->fields.size(); i++) {
     bool field_found = false;
-    if(msg->fields[i].name == pointcloud_labels_timestamp_) {
+    if (msg->fields[i].name == pointcloud_labels_timestamp_) {
       t_found = true;
       field_found = true;
     } else if (msg->fields[i].name == pointcloud_labels_x_) {
@@ -311,7 +311,7 @@ void ScanDeskewer::input_pointcloud_clbk(PointCloud2::UniquePtr msg)
       field_found = true;
     }
 
-    if(field_found) {
+    if (field_found) {
       if (found == 0ul) {
         count = msg->fields[i].count;
       } else if (count != msg->fields[i].count) {
@@ -325,7 +325,7 @@ void ScanDeskewer::input_pointcloud_clbk(PointCloud2::UniquePtr msg)
   bool count_check = count == 1ul;
   bool found_check = t_found && x_found && y_found && z_found && found == 4ul;
 
-  if(!count_check || !found_check) {
+  if (!count_check || !found_check) {
     std::string error = !count_check ? "fields elements count is zero or inconsistent" : "not all fields found";
     RCLCPP_ERROR_THROTTLE(
       get_logger(),

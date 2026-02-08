@@ -1,15 +1,10 @@
-/dua_tf_server:
-  ros__parameters:
-    fixed_frame: map
-    pose_period: 100
-    source_frames:
-      - base_link
-    target_frames:
-      - map
-    use_sim_time: false
-
 /scan_deskewer:
   ros__parameters:
+    dua:
+      tf_server:
+        get_transform: true
+        transform_pose: false
+        wait_servers: false
     motion:
       buffer_size: 30
       gravity: 9.803

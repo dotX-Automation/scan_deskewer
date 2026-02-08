@@ -34,7 +34,7 @@ ScanDeskewer::ScanDeskewer(const rclcpp::NodeOptions & opts)
 
   init_internals();
 
-  RCLCPP_INFO(this->get_logger(), "Node initialized");
+  RCLCPP_INFO(get_logger(), "Node initialized");
 }
 
 ScanDeskewer::~ScanDeskewer()
@@ -119,14 +119,6 @@ void ScanDeskewer::init_publishers()
   output_pointcloud_pub_ = dua_create_publisher<PointCloud2>(
     output_pub_topic_,
     dua_qos::Reliable::get_datum_qos());
-}
-
-void ScanDeskewer::init_service_clients()
-{
-  if (!tf_disable_) {
-    get_transform_client_ = dua_create_service_client<GetTransform>(
-      get_transform_client_name_);
-  }
 }
 
 void ScanDeskewer::init_internals()

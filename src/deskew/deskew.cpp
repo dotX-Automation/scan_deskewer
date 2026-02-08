@@ -91,7 +91,7 @@ void Deskewer::clear()
 
 bool Deskewer::fuse(double time, const Twist & twist)
 {
-  if(time <= last()) {
+  if (time <= last()) {
     return false;
   }
 
@@ -105,15 +105,15 @@ bool Deskewer::fuse(double time, const Twist & twist)
   twists_.at(curr_) = twist;
 
   curr_++;
-  if(curr_ >= size_) {
+  if (curr_ >= size_) {
     curr_ = 0ul;
   }
 
-  if(used_ < size_) {
+  if (used_ < size_) {
     used_++;
   }
 
-  if(corr_avail_ && time > corr_time_) {
+  if (corr_avail_ && time > corr_time_) {
     correct(corr_time_, corr_twist_);
   }
 
@@ -122,12 +122,12 @@ bool Deskewer::fuse(double time, const Twist & twist)
 
 bool Deskewer::fuse(double time, const Imu & imu)
 {
-  if(time <= last()) {
+  if (time <= last()) {
     return false;
   }
 
   times_.at(curr_) = time;
-  if(used_ == 0ul) {
+  if (used_ == 0ul) {
     accel_ = imu.accel;
     twists_.at(curr_).lin = Vector3d::Zero();
     twists_.at(curr_).ang = imu.gyro;
@@ -140,15 +140,15 @@ bool Deskewer::fuse(double time, const Imu & imu)
   }
 
   curr_++;
-  if(curr_ >= size_) {
+  if (curr_ >= size_) {
     curr_ = 0ul;
   }
 
-  if(used_ < size_) {
+  if (used_ < size_) {
     used_++;
   }
 
-  if(corr_avail_ && time > corr_time_) {
+  if (corr_avail_ && time > corr_time_) {
     correct(corr_time_, corr_twist_);
   }
 
@@ -160,7 +160,7 @@ bool Deskewer::correct(double time, const Twist & twist)
   if (used_ == 0ul || time < first()) {
     return false;
   } else if (time > last()) {
-    if(size_ == 1ul) {
+    if (size_ == 1ul) {
       fuse(time, twist);
     } else {
       corr_avail_ = true;
@@ -280,7 +280,7 @@ void Deskewer::deskew(
 
 size_t Deskewer::first_idx() const
 {
-  if(used_ < size_) {
+  if (used_ < size_) {
     return 0ul;
   } else {
     return curr_;
@@ -289,9 +289,9 @@ size_t Deskewer::first_idx() const
 
 size_t Deskewer::last_idx() const
 {
-  if(used_ == 0ul) {
+  if (used_ == 0ul) {
     return 0ul;
-  } else if(used_ < size_) {
+  } else if (used_ < size_) {
     return used_ - 1ul;
   } else {
     return ((curr_ == 0ul) ? size_ : curr_) - 1ul;
@@ -302,12 +302,12 @@ std::vector<size_t> Deskewer::find(double time) const
 {
   std::vector<size_t> idxs = std::vector<size_t>();
 
-  if(used_ == 0ul) {
+  if (used_ == 0ul) {
     return idxs;
   }
 
   size_t idx = 0ul;
-  if(used_ == 1) {
+  if (used_ == 1) {
     idxs.push_back(idx);
     return idxs;
   }
@@ -324,7 +324,7 @@ std::vector<size_t> Deskewer::find(double time) const
     return idxs;
   }
 
-  if(std::binary_search(times_.begin(), times_.end(), time)) {
+  if (std::binary_search(times_.begin(), times_.end(), time)) {
     return idxs;
   }
 

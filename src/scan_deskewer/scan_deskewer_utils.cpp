@@ -73,15 +73,15 @@ bool ScanDeskewer::refresh_isometry(
   const std::string & source, const std::string & target,
   const rclcpp::Time & time, Isometry3d & isometry)
 {
-  if(source.empty()) {
+  if (source.empty()) {
     return false;
   }
 
-  if(target.empty()) {
+  if (target.empty()) {
     return false;
   }
 
-  return get_transform(source, target, time, isometry);
+  return get_isometry(source, target, time, isometry);
 }
 
 
